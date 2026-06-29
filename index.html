@@ -8,9 +8,7 @@
     *{margin:0;padding:0;box-sizing:border-box;font-family:-apple-system,'SF Pro Display','Segoe UI',Roboto,system-ui,sans-serif}
     body{background:#0a0f1a;min-height:100vh;display:flex;justify-content:center;align-items:flex-start;padding:12px;color:#eef5ff}
     .app{max-width:430px;width:100%;background:linear-gradient(165deg,#141e2b,#0b111c);border-radius:32px;padding:20px 18px 28px;box-shadow:0 20px 60px rgba(0,0,0,.8),inset 0 1px 0 rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.04)}
-    .top-bar{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px}
-    .top-bar .back-btn{background:rgba(255,255,255,.05);border:none;color:#8ab4e0;font-size:1.4rem;width:44px;height:44px;border-radius:50%;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:.2s;backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,.04)}
-    .top-bar .back-btn:active{transform:scale(.92);background:rgba(255,255,255,.1)}
+    .top-bar{display:flex;align-items:center;justify-content:center;margin-bottom:10px;position:relative}
     .top-bar .title{font-size:1.3rem;font-weight:600;letter-spacing:.3px;background:linear-gradient(135deg,#e0edff,#8ab4e0);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
 
     .total-score-block{text-align:center;padding:12px 0 16px 0;margin-bottom:6px}
@@ -35,7 +33,6 @@
     .btn-minus{background:linear-gradient(145deg,#7a3a3a,#5f2a2a);box-shadow:0 4px 16px rgba(122,58,58,.3)}
     .btn-minus:active{box-shadow:0 2px 8px rgba(122,58,58,.2)}
 
-    /* ===== МАЛЕНЬКИЕ КНОПКИ ===== */
     .btn-sm{font-size:.7rem;padding:8px 12px;min-width:44px;border-radius:40px}
     .btn-sm-plus{background:linear-gradient(145deg,#2a6a4a,#1a4a32);box-shadow:0 3px 10px rgba(42,106,74,.25)}
     .btn-sm-plus:active{box-shadow:0 1px 4px rgba(42,106,74,.15)}
@@ -115,9 +112,7 @@
 <body>
 <div class="app">
   <div class="top-bar">
-    <button class="back-btn" id="backBtn">←</button>
     <span class="title">Поступки</span>
-    <div style="width:44px"></div>
   </div>
 
   <div class="total-score-block">
@@ -128,13 +123,10 @@
   <div class="input-row">
     <input type="text" id="actionInput" placeholder="Что сделал?">
     <div class="btn-group">
-      <!-- Основные -->
       <button class="btn btn-plus" id="addPlus">+1</button>
       <button class="btn btn-minus" id="addMinus">–2</button>
-      <!-- Зелёные маленькие -->
       <button class="btn btn-sm btn-sm-plus" id="addSmall1">+0.2</button>
       <button class="btn btn-sm btn-sm-plus" id="addSmall2">+0.5</button>
-      <!-- Красные маленькие -->
       <button class="btn btn-sm btn-sm-minus" id="addSmallMinus1">–1</button>
       <button class="btn btn-sm btn-sm-minus" id="addSmallMinus5">–5</button>
     </div>
@@ -204,7 +196,6 @@
   const ND=document.getElementById('newDayBtn');
   const DD=document.getElementById('deleteDayBtn');
   const R=document.getElementById('resetBtn');
-  const B=document.getElementById('backBtn');
   const AI=document.querySelectorAll('.ach-item');
 
   let st={totalScore:0,currentDay:1,days:{1:{actions:[],score:0,good:0,bad:0}}};
@@ -285,6 +276,10 @@
   }
 
   function reset(){if(!confirm('Сбросить всё?'))return;st={totalScore:0,currentDay:1,days:{1:{actions:[],score:0,good:0,bad:0}}};render(false)}
-  function back(){window.history.back()}
 
-  function init(){const saved=load();if(saved){st=saved;if(!st.days[st.currentDay])st.days[st.currentDay]={actions:[],score:0,good:0,bad:0}}else{st={totalScore:0,currentDay:1,days:{1:{actions:[],score:0,good:0,bad:0}}}}render(false);P.addEventListener('click',()=>add(1));M.addEventListener('click',()=>add(-2));S1.addEventListener('click',()=>add(0.2));S2.addEventListener('click',()=>add(0.5));SM1.addEventListener('click',()=>add(-1));SM5.addEventListener('click',()=>add(-5));I.addEventListener('keydown',e=>{if(e.key==='Enter')add(1)});ND.addEventListener('click'
+  function init(){const saved=load();if(saved){st=saved;if(!st.days[st.currentDay])st.days[st.currentDay]={actions:[],score:0,good:0,bad:0}}else{st={totalScore:0,currentDay:1,days:{1:{actions:[],score:0,good:0,bad:0}}}}render(false);P.addEventListener('click',()=>add(1));M.addEventListener('click',()=>add(-2));S1.addEventListener('click',()=>add(0.2));S2.addEventListener('click',()=>add(0.5));SM1.addEventListener('click',()=>add(-1));SM5.addEventListener('click',()=>add(-5));I.addEventListener('keydown',e=>{if(e.key==='Enter')add(1)});ND.addEventListener('click',newDay);DD.addEventListener('click',deleteDay);R.addEventListener('click',reset)}
+  init()
+})();
+</script>
+</body>
+</html>
